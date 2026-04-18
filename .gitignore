@@ -1,0 +1,7 @@
+node_modules/
+output/
+.spago/
+.psa-stash
+public/maya.js
+*.log
+.DS_Store

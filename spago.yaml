@@ -1,0 +1,26 @@
+package:
+  name: maya-web
+  dependencies:
+    - prelude
+    - arrays
+    - datetime
+    - enums
+    - foldable-traversable
+    - integers
+    - maybe
+    - partial
+  bundle:
+    module: Facade
+    platform: browser
+    type: module
+    outfile: public/maya.js
+  test:
+    main: Test.Main
+    dependencies:
+      - aff
+      - effect
+      - spec
+workspace:
+  packageSet:
+    registry: 76.0.0
+  extraPackages: {}

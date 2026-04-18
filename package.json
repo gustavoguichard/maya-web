@@ -1,0 +1,19 @@
+{
+  "name": "maya-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Mayan Tzolkin kin calculator — PureScript port of the Haskell library, compiled to a static web app.",
+  "type": "module",
+  "scripts": {
+    "build": "spago bundle",
+    "dev": "http-server public -p 3000 -c-1",
+    "test": "spago test"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "http-server": "^14.1.1",
+    "purescript": "^0.15.15",
+    "spago": "next"
+  },
+  "packageManager": "npm@11.12.1"
+}

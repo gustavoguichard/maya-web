@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mayan Tzolkin Kin Calculator</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f6f3ec;
+      --fg: #1f1a17;
+      --accent: #8a3a2e;
+      --muted: #6b6258;
+      --card: #fffdf7;
+      --border: #d8cfbe;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1a1714;
+        --fg: #ece4d3;
+        --accent: #e89179;
+        --muted: #a69e90;
+        --card: #23201c;
+        --border: #3a362f;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+    }
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin: 0 0 0.25rem;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0 0 1.5rem;
+      font-size: 0.95rem;
+    }
+    form {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    input[type="date"] {
+      flex: 1;
+      padding: 0.6rem 0.75rem;
+      font: inherit;
+      color: var(--fg);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    button {
+      padding: 0.6rem 1.1rem;
+      font: inherit;
+      font-weight: 600;
+      color: var(--card);
+      background: var(--accent);
+      border: 0;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover { filter: brightness(1.05); }
+    #result:empty { display: none; }
+    .kin-header {
+      padding: 1.25rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 1.25rem;
+    }
+    .kin-number {
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .kin-name {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 0.25rem 0 0;
+      color: var(--accent);
+    }
+    dl {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.4rem 1rem;
+      margin: 0 0 1.25rem;
+      padding: 1rem 1.25rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    dt {
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      align-self: center;
+    }
+    dd { margin: 0; }
+    h3 {
+      font-size: 1rem;
+      margin: 1.25rem 0 0.5rem;
+    }
+    ol, ul {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem 0.75rem 2rem;
+      margin: 0;
+    }
+    li { margin: 0.15rem 0; }
+    footer {
+      margin-top: 3rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Mayan Tzolkin Kin Calculator</h1>
+    <p class="subtitle">Find the kin, wavespell, and relationships for any date in the Dreamspell calendar.</p>
+
+    <form id="form">
+      <input type="date" id="date" required>
+      <button type="submit">Calculate</button>
+    </form>
+
+    <section id="result" aria-live="polite"></section>
+
+    <footer>Ported from the original Haskell library to PureScript.</footer>
+  </main>
+
+  <script type="module">
+    import { kinInfo } from './maya.js';
+
+    const dateInput = document.getElementById('date');
+    const form = document.getElementById('form');
+    const result = document.getElementById('result');
+
+    const today = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    dateInput.value = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+
+    const escape = (s) => String(s).replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[c]);
+
+    function render(info) {
+      result.innerHTML = `
+        <div class="kin-header">
+          <div class="kin-number">Kin ${info.number}</div>
+          <h2 class="kin-name">${escape(info.name)}</h2>
+        </div>
+        <dl>
+          <dt>Seal</dt><dd>${escape(info.seal)}</dd>
+          <dt>Tone</dt><dd>${escape(info.tone)}</dd>
+          <dt>Color</dt><dd>${escape(info.color)}</dd>
+          <dt>Guide</dt><dd>${escape(info.guide)}</dd>
+          <dt>Analog</dt><dd>${escape(info.analog)}</dd>
+          <dt>Antipode</dt><dd>${escape(info.antipode)}</dd>
+          <dt>Hidden</dt><dd>${escape(info.hidden)}</dd>
+        </dl>
+        <h3>Wavespell</h3>
+        <ol>${info.wavespell.map((k) => `<li>${escape(k)}</li>`).join('')}</ol>
+        <h3>Earth family</h3>
+        <ul>${info.family.map((k) => `<li>${escape(k)}</li>`).join('')}</ul>
+      `;
+    }
+
+    function compute() {
+      const [y, m, d] = dateInput.value.split('-').map(Number);
+      if (!y || !m || !d) return;
+      render(kinInfo({ year: y, month: m, day: d }));
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      compute();
+    });
+
+    compute();
+  </script>
+</body>
+</html>

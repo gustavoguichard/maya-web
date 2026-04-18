@@ -1,150 +1,482 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mayan Tzolkin Kin Calculator</title>
+  <title>Kin Maia — Calculadora do Tzolkin</title>
+  <meta name="description" content="Descubra seu Kin no calendário Tzolkin maia. Informe uma data e veja selo, tom, cor, onda encantada e relações.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%80%EF%B8%8F%3C/text%3E%3C/svg%3E">
   <style>
     :root {
       color-scheme: light dark;
-      --bg: #f6f3ec;
-      --fg: #1f1a17;
+
+      --bg: #f6efe0;
+      --bg-pattern: #efe6d2;
+      --fg: #2a2218;
+      --muted: #6f6656;
+      --card: #fffbf2;
+      --border: #d9cfb8;
       --accent: #8a3a2e;
-      --muted: #6b6258;
-      --card: #fffdf7;
-      --border: #d8cfbe;
+
+      --color-vermelho: #c2413a;
+      --color-branco:   #d8d1bc;
+      --color-azul:     #3f6f9e;
+      --color-amarelo:  #d9a53c;
+
+      --ink-on-color:   #fffbf2;
     }
+
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #1a1714;
-        --fg: #ece4d3;
-        --accent: #e89179;
-        --muted: #a69e90;
-        --card: #23201c;
-        --border: #3a362f;
+        --bg: #1a1612;
+        --bg-pattern: #231d17;
+        --fg: #ece3cf;
+        --muted: #a9a08e;
+        --card: #262019;
+        --border: #3c352b;
+        --accent: #ec8e73;
+
+        --color-vermelho: #d0564c;
+        --color-branco:   #c8c1ac;
+        --color-azul:     #4e84b5;
+        --color-amarelo:  #e5b452;
       }
     }
+
     * { box-sizing: border-box; }
+
+    html, body { height: 100%; }
+
     body {
       margin: 0;
-      font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-      background: var(--bg);
+      font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 10% -10%, var(--bg-pattern), transparent 60%),
+        radial-gradient(900px 600px at 110% 10%, var(--bg-pattern), transparent 55%),
+        var(--bg);
       color: var(--fg);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
+
     main {
-      max-width: 640px;
+      max-width: 680px;
       margin: 0 auto;
-      padding: 2rem 1.25rem 4rem;
+      padding: 2.5rem 1.25rem 5rem;
     }
+
+    header.hero {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .hero .mark {
+      font-size: 2.5rem;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
     h1 {
-      font-size: 1.5rem;
-      margin: 0 0 0.25rem;
+      font-size: 1.75rem;
+      margin: 0.25rem 0 0.25rem;
+      letter-spacing: -0.01em;
     }
+
     .subtitle {
       color: var(--muted);
-      margin: 0 0 1.5rem;
+      margin: 0 0 0;
       font-size: 0.95rem;
     }
+
     form {
       display: flex;
       gap: 0.5rem;
-      margin-bottom: 2rem;
+      margin: 1.75rem 0 2rem;
     }
+
     input[type="date"] {
       flex: 1;
-      padding: 0.6rem 0.75rem;
+      padding: 0.7rem 0.9rem;
       font: inherit;
       color: var(--fg);
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 10px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
+
+    input[type="date"]:focus,
+    button:focus {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
     button {
-      padding: 0.6rem 1.1rem;
+      padding: 0.7rem 1.2rem;
       font: inherit;
       font-weight: 600;
-      color: var(--card);
+      color: var(--ink-on-color);
       background: var(--accent);
       border: 0;
-      border-radius: 6px;
+      border-radius: 10px;
       cursor: pointer;
+      transition: transform .12s ease, filter .12s ease;
     }
-    button:hover { filter: brightness(1.05); }
+    button:hover { filter: brightness(1.06); }
+    button:active { transform: translateY(1px); }
+
     #result:empty { display: none; }
-    .kin-header {
-      padding: 1.25rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 1.25rem;
+
+    /* --- Kin card --- */
+
+    .kin-card {
+      position: relative;
+      border-radius: 18px;
+      padding: 1.75rem 1.5rem 1.5rem;
+      color: var(--ink-on-color);
+      text-align: center;
+      margin-bottom: 1.75rem;
+      box-shadow:
+        0 1px 2px rgba(0,0,0,0.06),
+        0 12px 30px -12px rgba(0,0,0,0.25);
+      overflow: hidden;
+      isolation: isolate;
     }
-    .kin-number {
-      color: var(--muted);
+    .kin-card::before {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(600px 200px at 50% -20%, rgba(255,255,255,0.22), transparent 70%),
+        radial-gradient(600px 300px at 50% 120%, rgba(0,0,0,0.22), transparent 60%);
+      z-index: -1;
+    }
+
+    .kin-card--vermelho { background: var(--color-vermelho); }
+    .kin-card--branco   { background: var(--color-branco); color: #2a2218; }
+    .kin-card--azul     { background: var(--color-azul); }
+    .kin-card--amarelo  { background: var(--color-amarelo); color: #2a2218; }
+
+    .kin-card__eyebrow {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      margin-bottom: 0.6rem;
+    }
+
+    .kin-card__seal-emoji {
+      font-size: 3.4rem;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.15));
+    }
+
+    .kin-card__seal-name {
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin: 0.1rem 0 0.75rem;
+    }
+
+    .kin-card__tone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.25rem;
+    }
+
+    .tone-glyph {
+      width: 82px;
+      height: auto;
+      fill: currentColor;
+    }
+
+    .kin-card__tone-name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      opacity: 0.92;
+    }
+
+    .kin-card__number {
+      margin-top: 1.1rem;
+      padding: 0.35rem 0.75rem;
+      display: inline-block;
+      border: 1px solid currentColor;
+      border-radius: 999px;
       font-size: 0.85rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
+      opacity: 0.9;
     }
-    .kin-name {
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin: 0.25rem 0 0;
-      color: var(--accent);
+
+    /* --- Sections --- */
+
+    .section {
+      margin-top: 1.75rem;
     }
-    dl {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 0.4rem 1rem;
-      margin: 0 0 1.25rem;
-      padding: 1rem 1.25rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-    }
-    dt {
-      color: var(--muted);
-      font-size: 0.85rem;
+
+    .section__title {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      align-self: center;
+      color: var(--muted);
+      margin: 0 0 0.6rem 0.25rem;
     }
-    dd { margin: 0; }
-    h3 {
-      font-size: 1rem;
-      margin: 1.25rem 0 0.5rem;
+
+    .rel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
     }
-    ol, ul {
+    @media (max-width: 480px) {
+      .rel-grid { grid-template-columns: 1fr; }
+    }
+
+    .rel {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.75rem 1rem 0.75rem 2rem;
-      margin: 0;
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
     }
-    li { margin: 0.15rem 0; }
+    .rel__label {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+    .rel__kin {
+      font-weight: 600;
+      display: flex;
+      align-items: baseline;
+      gap: 0.45rem;
+    }
+    .rel__emoji { font-size: 1.1rem; line-height: 1; }
+
+    .list {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.5rem;
+      margin: 0;
+      list-style: none;
+      counter-reset: kin;
+    }
+    .list__item {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.5rem 0.65rem;
+      border-radius: 8px;
+    }
+    .list__item + .list__item {
+      border-top: 1px dashed var(--border);
+    }
+    .list__item--highlight {
+      background: color-mix(in srgb, var(--accent) 8%, transparent);
+    }
+    .list__num {
+      flex-shrink: 0;
+      width: 1.8rem;
+      text-align: right;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.85rem;
+    }
+    .list__emoji { font-size: 1.05rem; line-height: 1; width: 1.2rem; text-align: center; }
+    .list__name { font-weight: 500; }
+
     footer {
       margin-top: 3rem;
       color: var(--muted);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       text-align: center;
     }
+    footer a { color: inherit; }
   </style>
 </head>
 <body>
   <main>
-    <h1>Mayan Tzolkin Kin Calculator</h1>
-    <p class="subtitle">Find the kin, wavespell, and relationships for any date in the Dreamspell calendar.</p>
+    <header class="hero">
+      <div class="mark" aria-hidden="true">☀️</div>
+      <h1>Calculadora do Kin Maia</h1>
+      <p class="subtitle">Descubra seu Kin no Tzolkin — 260 dias, 20 selos, 13 tons.</p>
+    </header>
 
-    <form id="form">
-      <input type="date" id="date" required>
-      <button type="submit">Calculate</button>
+    <form id="form" autocomplete="off">
+      <input type="date" id="date" required aria-label="Data">
+      <button type="submit">Ver meu Kin</button>
     </form>
 
     <section id="result" aria-live="polite"></section>
 
-    <footer>Ported from the original Haskell library to PureScript.</footer>
+    <footer>
+      Baseado no sistema <strong>Dreamspell</strong> de José Argüelles.
+      Porte em <a href="https://github.com/gustavoguichard/maya-web" target="_blank" rel="noopener">PureScript</a> da
+      <a href="https://github.com/gustavoguichard/maya" target="_blank" rel="noopener">biblioteca original em Haskell</a>.
+    </footer>
   </main>
 
   <script type="module">
     import { kinInfo } from './maya.js';
+
+    // --- Portuguese display names ---
+
+    const SEAL_PT = {
+      Dragao: 'Dragão',
+      Vento: 'Vento',
+      Noite: 'Noite',
+      Semente: 'Semente',
+      Serpente: 'Serpente',
+      EnlacadorDeMundos: 'Enlaçador de Mundos',
+      Mao: 'Mão',
+      Estrela: 'Estrela',
+      Lua: 'Lua',
+      Cachorro: 'Cachorro',
+      Macaco: 'Macaco',
+      Humano: 'Humano',
+      CaminhanteDoCeu: 'Caminhante do Céu',
+      Mago: 'Mago',
+      Aguia: 'Águia',
+      Guerreiro: 'Guerreiro',
+      Terra: 'Terra',
+      Espelho: 'Espelho',
+      Tormenta: 'Tormenta',
+      Sol: 'Sol',
+    };
+
+    const TONE_PT = {
+      Magnetico: 'Magnético',
+      Lunar: 'Lunar',
+      Eletrico: 'Elétrico',
+      AutoExistente: 'Autoexistente',
+      Harmonico: 'Harmônico',
+      Ritmico: 'Rítmico',
+      Ressonante: 'Ressonante',
+      Galatico: 'Galáctico',
+      Solar: 'Solar',
+      Planetario: 'Planetário',
+      Espectral: 'Espectral',
+      Cristal: 'Cristal',
+      Cosmico: 'Cósmico',
+    };
+
+    const TONE_NUMBER = {
+      Magnetico: 1, Lunar: 2, Eletrico: 3, AutoExistente: 4, Harmonico: 5,
+      Ritmico: 6, Ressonante: 7, Galatico: 8, Solar: 9, Planetario: 10,
+      Espectral: 11, Cristal: 12, Cosmico: 13,
+    };
+
+    const SEAL_EMOJI = {
+      Dragao: '🐉',
+      Vento: '🌬️',
+      Noite: '🌙',
+      Semente: '🌱',
+      Serpente: '🐍',
+      EnlacadorDeMundos: '🌉',
+      Mao: '✋',
+      Estrela: '⭐',
+      Lua: '🌕',
+      Cachorro: '🐕',
+      Macaco: '🐒',
+      Humano: '🧍',
+      CaminhanteDoCeu: '🌤️',
+      Mago: '🧙',
+      Aguia: '🦅',
+      Guerreiro: '⚔️',
+      Terra: '🌎',
+      Espelho: '🪞',
+      Tormenta: '⛈️',
+      Sol: '☀️',
+    };
+
+    const COLOR_CSS = {
+      Vermelho: 'vermelho',
+      Branco: 'branco',
+      Azul: 'azul',
+      Amarelo: 'amarelo',
+    };
+
+    // --- helpers ---
+
+    const escape = (s) => String(s).replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    })[c]);
+
+    // "Mao Cristal Azul" → { seal: "Mao", tone: "Cristal", color: "Azul" }
+    const parseKinName = (name) => {
+      const [seal, tone, color] = name.split(' ');
+      return { seal, tone, color };
+    };
+
+    const prettyKin = (name) => {
+      const { seal, tone, color } = parseKinName(name);
+      return `${SEAL_PT[seal] ?? seal} ${TONE_PT[tone] ?? tone} ${color}`;
+    };
+
+    /** Mayan numeral SVG: dots on top (1–4), bars below (5 each). */
+    const toneSvg = (n) => {
+      const bars = Math.floor(n / 5);
+      const dots = n % 5;
+
+      const width = 80;
+      const dotR = 6;
+      const dotGap = 8;
+      const barH = 9;
+      const barW = 56;
+      const gap = 5;
+
+      let y = 2;
+      const parts = [];
+
+      if (dots > 0) {
+        const totalW = dots * (dotR * 2) + (dots - 1) * dotGap;
+        const startX = (width - totalW) / 2 + dotR;
+        for (let i = 0; i < dots; i++) {
+          parts.push(`<circle cx="${startX + i * (dotR * 2 + dotGap)}" cy="${y + dotR}" r="${dotR}"/>`);
+        }
+        y += dotR * 2 + gap;
+      }
+
+      for (let i = 0; i < bars; i++) {
+        parts.push(`<rect x="${(width - barW) / 2}" y="${y}" width="${barW}" height="${barH}" rx="2"/>`);
+        y += barH + gap;
+      }
+
+      return `<svg class="tone-glyph" viewBox="0 0 ${width} ${y}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${parts.join('')}</svg>`;
+    };
+
+    const relCard = (label, kinName) => {
+      const { seal } = parseKinName(kinName);
+      return `
+        <div class="rel">
+          <div class="rel__label">${label}</div>
+          <div class="rel__kin">
+            <span class="rel__emoji" aria-hidden="true">${SEAL_EMOJI[seal] ?? ''}</span>
+            <span>${escape(prettyKin(kinName))}</span>
+          </div>
+        </div>`;
+    };
+
+    const wavespellItem = (kinName, index, currentSeal) => {
+      const { seal } = parseKinName(kinName);
+      const isCurrent = seal === currentSeal;
+      return `
+        <li class="list__item ${isCurrent ? 'list__item--highlight' : ''}">
+          <span class="list__num">${index + 1}.</span>
+          <span class="list__emoji" aria-hidden="true">${SEAL_EMOJI[seal] ?? ''}</span>
+          <span class="list__name">${escape(prettyKin(kinName))}</span>
+        </li>`;
+    };
+
+    const familyItem = (sealKey) => `
+      <li class="list__item">
+        <span class="list__emoji" aria-hidden="true">${SEAL_EMOJI[sealKey] ?? ''}</span>
+        <span class="list__name">${escape(SEAL_PT[sealKey] ?? sealKey)}</span>
+      </li>`;
+
+    // --- render ---
 
     const dateInput = document.getElementById('date');
     const form = document.getElementById('form');
@@ -154,29 +486,48 @@
     const pad = (n) => String(n).padStart(2, '0');
     dateInput.value = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
 
-    const escape = (s) => String(s).replace(/[&<>"']/g, (c) => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    })[c]);
-
     function render(info) {
+      const colorClass = COLOR_CSS[info.color] ?? 'azul';
+      const sealEmoji = SEAL_EMOJI[info.seal] ?? '✨';
+      const sealName = SEAL_PT[info.seal] ?? info.seal;
+      const toneName = TONE_PT[info.tone] ?? info.tone;
+      const toneNum = TONE_NUMBER[info.tone] ?? 1;
+
       result.innerHTML = `
-        <div class="kin-header">
-          <div class="kin-number">Kin ${info.number}</div>
-          <h2 class="kin-name">${escape(info.name)}</h2>
-        </div>
-        <dl>
-          <dt>Seal</dt><dd>${escape(info.seal)}</dd>
-          <dt>Tone</dt><dd>${escape(info.tone)}</dd>
-          <dt>Color</dt><dd>${escape(info.color)}</dd>
-          <dt>Guide</dt><dd>${escape(info.guide)}</dd>
-          <dt>Analog</dt><dd>${escape(info.analog)}</dd>
-          <dt>Antipode</dt><dd>${escape(info.antipode)}</dd>
-          <dt>Hidden</dt><dd>${escape(info.hidden)}</dd>
-        </dl>
-        <h3>Wavespell</h3>
-        <ol>${info.wavespell.map((k) => `<li>${escape(k)}</li>`).join('')}</ol>
-        <h3>Earth family</h3>
-        <ul>${info.family.map((k) => `<li>${escape(k)}</li>`).join('')}</ul>
+        <article class="kin-card kin-card--${colorClass}">
+          <div class="kin-card__eyebrow">Kin ${info.number} · ${escape(info.color)}</div>
+          <div class="kin-card__seal-emoji" aria-hidden="true">${sealEmoji}</div>
+          <div class="kin-card__seal-name">${escape(sealName)}</div>
+          <div class="kin-card__tone">
+            ${toneSvg(toneNum)}
+            <div class="kin-card__tone-name">${escape(toneName)} <span style="opacity:.7">· ${toneNum}</span></div>
+          </div>
+          <div class="kin-card__number">Kin ${info.number} de 260</div>
+        </article>
+
+        <section class="section">
+          <h2 class="section__title">Relações</h2>
+          <div class="rel-grid">
+            ${relCard('Guia', info.guide)}
+            ${relCard('Análogo', info.analog)}
+            ${relCard('Antípoda', info.antipode)}
+            ${relCard('Oculto', info.hidden)}
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 class="section__title">Onda Encantada · 13 dias</h2>
+          <ol class="list">
+            ${info.wavespell.map((k, i) => wavespellItem(k, i, info.seal)).join('')}
+          </ol>
+        </section>
+
+        <section class="section">
+          <h2 class="section__title">Família Terrestre</h2>
+          <ul class="list">
+            ${info.family.map(familyItem).join('')}
+          </ul>
+        </section>
       `;
     }
 

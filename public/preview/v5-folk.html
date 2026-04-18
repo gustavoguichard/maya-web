@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V5 · Folk Vibrante — Kin Maia</title>
+  <style>
+    :root {
+      --ink: #1a1220;
+      --paper: #fffbef;
+      --muted: #6a5a50;
+
+      --hot-pink: #e83a82;
+      --teal: #16a085;
+      --orange: #f37736;
+      --deep-purple: #5b2d82;
+      --cream: #fff4d1;
+
+      --c-vermelho: #e0352e;
+      --c-branco:   #e8dec6;
+      --c-azul:     #1f6db3;
+      --c-amarelo:  #f4c220;
+
+      --shadow: 4px 4px 0 var(--ink);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #fef3d1;
+        --paper: #1d0f22;
+        --muted: #baa78e;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, "Inter", -apple-system, system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      background-image:
+        radial-gradient(circle at 10% 10%, rgba(232,58,130,0.08) 0 2px, transparent 2.5px),
+        radial-gradient(circle at 90% 20%, rgba(22,160,133,0.08) 0 2px, transparent 2.5px),
+        radial-gradient(circle at 30% 85%, rgba(243,119,54,0.08) 0 2px, transparent 2.5px),
+        radial-gradient(circle at 80% 70%, rgba(91,45,130,0.08) 0 2px, transparent 2.5px);
+      background-size: 240px 240px;
+      min-height: 100vh;
+      font-size: 16px;
+    }
+
+    .display {
+      font-family: "Archivo Black", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    main {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 5rem;
+      position: relative;
+    }
+
+    .nav {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.75rem;
+      font-weight: 700; font-size: 0.82rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .nav__pill {
+      background: var(--hot-pink); color: #fff;
+      padding: 0.35rem 0.8rem; border-radius: 999px;
+      transform: rotate(-1.5deg);
+      box-shadow: 3px 3px 0 var(--ink);
+      border: 2px solid var(--ink);
+    }
+    .nav a {
+      color: var(--ink); text-decoration: none;
+      border-bottom: 3px solid var(--teal);
+    }
+
+    /* --- Hero --- */
+
+    .hero {
+      padding: 2rem 1.5rem 1.25rem;
+      border: 3px solid var(--ink);
+      border-radius: 24px;
+      background: var(--cream);
+      box-shadow: 8px 8px 0 var(--ink);
+      text-align: center;
+      position: relative;
+      margin-bottom: 2.25rem;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: repeating-conic-gradient(
+        from 180deg at 50% 100%,
+        transparent 0 5deg,
+        rgba(232, 58, 130, 0.10) 5deg 7deg
+      );
+      pointer-events: none;
+    }
+    .hero > * { position: relative; }
+    .hero__kicker {
+      display: inline-block;
+      background: var(--ink); color: var(--cream);
+      font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+    h1 {
+      font-family: "Archivo Black", ui-sans-serif, system-ui, sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 7vw, 3rem);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.6rem;
+      text-transform: uppercase;
+    }
+    h1 .accent-1 { color: var(--hot-pink); }
+    h1 .accent-2 { color: var(--teal); }
+    .hero .sub { font-size: 0.95rem; color: var(--muted); margin: 0; font-weight: 500; }
+
+    /* --- Form --- */
+
+    form {
+      display: flex; gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+    input[type="date"] {
+      flex: 1;
+      font: inherit; font-weight: 600;
+      padding: 0.75rem 1rem;
+      background: #fff;
+      color: var(--ink);
+      border: 3px solid var(--ink);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+    @media (prefers-color-scheme: dark) { input[type="date"] { background: #271431; color: var(--ink); color-scheme: dark; } }
+    input[type="date"]:focus, button:focus { outline: none; transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
+    button {
+      font: inherit; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.75rem 1.25rem;
+      background: var(--hot-pink);
+      color: #fff;
+      border: 3px solid var(--ink);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+    }
+    button:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+    button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+
+    /* --- Kin card --- */
+
+    .kc {
+      position: relative;
+      border: 3px solid var(--ink);
+      border-radius: 28px;
+      padding: 2rem 1.5rem 1.75rem;
+      color: #fff;
+      text-align: center;
+      box-shadow: 10px 10px 0 var(--ink);
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+    .kc--vermelho { background: var(--c-vermelho); }
+    .kc--branco   { background: var(--c-branco); color: var(--ink); }
+    .kc--azul     { background: var(--c-azul); }
+    .kc--amarelo  { background: var(--c-amarelo); color: var(--ink); }
+    .kc__rays {
+      position: absolute; inset: -30% auto auto 50%;
+      width: 160%; transform: translateX(-50%);
+      opacity: 0.15; pointer-events: none;
+    }
+    .kc__conf {
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle 4px at 15% 15%, rgba(255,255,255,0.4) 50%, transparent 52%),
+        radial-gradient(circle 3px at 85% 20%, rgba(255,255,255,0.35) 50%, transparent 52%),
+        radial-gradient(circle 5px at 80% 85%, rgba(255,255,255,0.3) 50%, transparent 52%),
+        radial-gradient(circle 3px at 20% 80%, rgba(255,255,255,0.4) 50%, transparent 52%);
+      pointer-events: none;
+    }
+    .kc__content { position: relative; }
+    .kc__badge {
+      display: inline-block;
+      background: #fff;
+      color: var(--ink);
+      padding: 0.25rem 0.75rem;
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 800;
+      transform: rotate(-2deg);
+      box-shadow: 3px 3px 0 var(--ink);
+      margin-bottom: 1.25rem;
+    }
+    .kc__emoji {
+      font-size: 4.2rem;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      filter: drop-shadow(0 5px 0 var(--ink));
+    }
+    .kc__name {
+      font-family: "Archivo Black", ui-sans-serif, system-ui, sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.4rem, 9vw, 3.2rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      margin: 0 0 1rem;
+      -webkit-text-stroke: 1.5px var(--ink);
+    }
+    .kc__tone {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.5rem 1rem;
+      background: #fff; color: var(--ink);
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+    .tone-glyph { fill: var(--ink); width: 38px; }
+    .kc__tone-text { font-weight: 800; text-transform: uppercase; font-size: 0.82rem; letter-spacing: 0.08em; }
+    .kc__number {
+      margin-top: 1.2rem;
+      font-family: "Archivo Black", ui-sans-serif, system-ui, sans-serif;
+      font-weight: 900;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    /* --- Sections --- */
+
+    .section { margin-top: 2rem; }
+    .section__title {
+      display: inline-block;
+      background: var(--ink); color: var(--cream);
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      font-family: "Archivo Black", ui-sans-serif, system-ui, sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin: 0 0 0.9rem;
+      transform: rotate(-1deg);
+      box-shadow: 3px 3px 0 var(--teal);
+    }
+
+    .rel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (max-width: 480px) { .rel-grid { grid-template-columns: 1fr; } }
+    .rel {
+      background: #fff;
+      color: var(--ink);
+      border: 3px solid var(--ink);
+      border-radius: 16px;
+      padding: 0.75rem 1rem;
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+    @media (prefers-color-scheme: dark) { .rel { background: #291434; color: var(--ink); } }
+    .rel__label {
+      display: inline-block;
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      font-weight: 900;
+      padding: 0.1rem 0.5rem;
+      margin-bottom: 0.4rem;
+      border-radius: 4px;
+    }
+    .rel:nth-child(1) .rel__label { background: var(--hot-pink); color: #fff; }
+    .rel:nth-child(2) .rel__label { background: var(--teal); color: #fff; }
+    .rel:nth-child(3) .rel__label { background: var(--orange); color: #fff; }
+    .rel:nth-child(4) .rel__label { background: var(--deep-purple); color: #fff; }
+    .rel__kin { font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+    .rel__kin .em { font-size: 1.2rem; }
+
+    .list {
+      margin: 0; padding: 0.5rem;
+      background: #fff;
+      list-style: none;
+      border: 3px solid var(--ink);
+      border-radius: 18px;
+      box-shadow: 6px 6px 0 var(--ink);
+    }
+    @media (prefers-color-scheme: dark) { .list { background: #291434; } }
+    .list li {
+      display: flex; align-items: center; gap: 0.65rem;
+      padding: 0.55rem 0.8rem;
+      border-radius: 10px;
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .list__hl { background: var(--cream); font-weight: 800; outline: 2px dashed var(--ink); outline-offset: -4px; }
+    @media (prefers-color-scheme: dark) { .list__hl { background: #3a1d48; outline-color: var(--cream); } }
+    .list__num {
+      width: 1.75rem; text-align: center;
+      font-family: "Archivo Black", ui-sans-serif, system-ui, sans-serif;
+      font-size: 0.78rem;
+      background: var(--ink); color: var(--cream);
+      padding: 0.15rem 0;
+      border-radius: 6px;
+    }
+    .list__emoji { font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="nav">
+      <span class="nav__pill">V5 · Folk Vibrante</span>
+      <a href="index.html">Ver os 5 →</a>
+    </div>
+
+    <header class="hero">
+      <div class="hero__kicker">TZOLKIN · DREAMSPELL</div>
+      <h1>Qual é o <span class="accent-1">seu</span><br><span class="accent-2">Kin</span> hoje?</h1>
+      <p class="sub">260 dias, 20 selos, 13 tons — escolha uma data.</p>
+    </header>
+
+    <form id="form" autocomplete="off">
+      <input type="date" id="date" required aria-label="Data">
+      <button type="submit">Descobrir</button>
+    </form>
+
+    <section id="result" aria-live="polite"></section>
+  </main>
+
+  <script type="module">
+    import { setupForm, toneSvg, prettyKin, parseKinName, escape,
+             SEAL_PT, TONE_PT, TONE_NUMBER, SEAL_EMOJI, COLOR_CSS } from './shared.js';
+
+    setupForm((info) => {
+      const colorClass = COLOR_CSS[info.color] ?? 'azul';
+      const toneNum = TONE_NUMBER[info.tone] ?? 1;
+      const currentSeal = info.seal;
+
+      const rays = (stroke) => `
+        <svg class="kc__rays" viewBox="0 0 200 80" preserveAspectRatio="none" aria-hidden="true">
+          <g fill="none" stroke="${stroke}" stroke-width="1.5" stroke-linecap="round">
+            ${Array.from({ length: 28 }).map((_, i) => {
+              const x = 100, y = 80;
+              const angle = (Math.PI * (i / 27));
+              const r = 140;
+              const x2 = x + Math.cos(Math.PI + angle) * r;
+              const y2 = y + Math.sin(Math.PI + angle) * r;
+              return `<line x1="${x}" y1="${y}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}"/>`;
+            }).join('')}
+          </g>
+        </svg>`;
+
+      const rel = (label, kin) => {
+        const { seal } = parseKinName(kin);
+        return `<div class="rel">
+          <span class="rel__label">${label}</span>
+          <div class="rel__kin"><span class="em">${SEAL_EMOJI[seal] ?? ''}</span>${escape(prettyKin(kin))}</div>
+        </div>`;
+      };
+
+      const waveItem = (kin, i) => {
+        const { seal } = parseKinName(kin);
+        const hl = seal === currentSeal ? 'list__hl' : '';
+        return `<li class="${hl}"><span class="list__num">${i + 1}</span><span class="list__emoji">${SEAL_EMOJI[seal] ?? ''}</span>${escape(prettyKin(kin))}</li>`;
+      };
+
+      const famItem = (s) => `<li><span class="list__emoji">${SEAL_EMOJI[s] ?? ''}</span>${escape(SEAL_PT[s] ?? s)}</li>`;
+
+      const strokeForColor = {
+        vermelho: '#fff', branco: '#333', azul: '#fff', amarelo: '#333',
+      }[colorClass] ?? '#fff';
+
+      return `
+        <article class="kc kc--${colorClass}">
+          ${rays(strokeForColor)}
+          <div class="kc__conf"></div>
+          <div class="kc__content">
+            <span class="kc__badge">Kin ${info.number}</span>
+            <div class="kc__emoji">${SEAL_EMOJI[info.seal] ?? '✨'}</div>
+            <h2 class="kc__name">${escape(SEAL_PT[info.seal] ?? info.seal)}</h2>
+            <div class="kc__tone">
+              ${toneSvg(toneNum, { width: 42, dotR: 3.5, dotGap: 5, barH: 5, barW: 30, gap: 3 })}
+              <span class="kc__tone-text">${escape(TONE_PT[info.tone] ?? info.tone)} · ${toneNum}</span>
+            </div>
+            <div class="kc__number">${escape(info.color)} · Kin ${info.number} / 260</div>
+          </div>
+        </article>
+
+        <section class="section">
+          <h2 class="section__title">Relações</h2>
+          <div class="rel-grid">
+            ${rel('Guia', info.guide)}
+            ${rel('Análogo', info.analog)}
+            ${rel('Antípoda', info.antipode)}
+            ${rel('Oculto', info.hidden)}
+          </div>
+        </section>
+
+        <section class="section">
+          <h2 class="section__title">Onda Encantada · 13 dias</h2>
+          <ol class="list">${info.wavespell.map(waveItem).join('')}</ol>
+        </section>
+
+        <section class="section">
+          <h2 class="section__title">Família Terrestre</h2>
+          <ul class="list">${info.family.map(famItem).join('')}</ul>
+        </section>
+      `;
+    });
+  </script>
+</body>
+</html>

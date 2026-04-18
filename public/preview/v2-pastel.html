@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>V2 · Pastel Suave — Kin Maia</title>
+  <style>
+    :root {
+      --bg-1: #eef2ff;
+      --bg-2: #fdecf5;
+      --bg-3: #e7f7ee;
+
+      --card: rgba(255,255,255,0.78);
+      --ink: #2a2f45;
+      --ink-soft: #6f7592;
+      --border: rgba(42,47,69,0.08);
+
+      --c-vermelho-bg: #fde1de;  --c-vermelho-ink: #b0342e;
+      --c-branco-bg:   #eef0f5;  --c-branco-ink:   #5b6079;
+      --c-azul-bg:     #dbe8fb;  --c-azul-ink:     #2a5aa8;
+      --c-amarelo-bg: #fcefcd;   --c-amarelo-ink:  #8f6a16;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-1: #171a2e;
+        --bg-2: #20182a;
+        --bg-3: #171f28;
+
+        --card: rgba(28,31,50,0.65);
+        --ink: #e7e9f3;
+        --ink-soft: #a0a4bd;
+        --border: rgba(255,255,255,0.09);
+
+        --c-vermelho-bg: #3d1c1a;  --c-vermelho-ink: #ed8076;
+        --c-branco-bg:   #25283a;  --c-branco-ink:   #c7cbe0;
+        --c-azul-bg:     #18243f;  --c-azul-ink:     #86b0f0;
+        --c-amarelo-bg: #2f2512;   --c-amarelo-ink:  #ecc659;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", ui-rounded, system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 800px at -10% -10%, var(--bg-1), transparent 60%),
+        radial-gradient(1000px 700px at 110% 0%, var(--bg-2), transparent 55%),
+        radial-gradient(900px 600px at 50% 120%, var(--bg-3), transparent 60%),
+        var(--bg-1);
+      min-height: 100vh;
+    }
+
+    main {
+      max-width: 660px;
+      margin: 0 auto;
+      padding: 3rem 1.25rem 5rem;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      margin-bottom: 2rem;
+    }
+    .nav a { color: inherit; }
+
+    .hero { text-align: center; margin-bottom: 2rem; }
+    .hero .mark { font-size: 2.75rem; line-height: 1; margin-bottom: 0.25rem; }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      margin: 0.25rem 0;
+    }
+    .sub { color: var(--ink-soft); margin: 0; font-size: 0.95rem; }
+
+    form {
+      display: flex;
+      gap: 0.5rem;
+      margin: 2rem 0;
+      padding: 0.5rem;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      box-shadow: 0 10px 30px -15px rgba(42,47,69,0.15);
+    }
+    input[type="date"] {
+      flex: 1;
+      font: inherit;
+      padding: 0.6rem 1rem;
+      background: transparent;
+      border: 0;
+      color: var(--ink);
+      border-radius: 999px;
+    }
+    input[type="date"]:focus, button:focus { outline: 2px solid var(--ink); outline-offset: 2px; }
+    button {
+      font: inherit;
+      font-weight: 600;
+      padding: 0.6rem 1.2rem;
+      background: var(--ink);
+      color: var(--bg-1);
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .kc {
+      border-radius: 28px;
+      padding: 2rem 1.75rem 1.75rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+      box-shadow:
+        0 2px 10px -3px rgba(0,0,0,0.04),
+        0 25px 50px -20px rgba(42,47,69,0.22);
+    }
+    .kc--vermelho { background: var(--c-vermelho-bg); color: var(--c-vermelho-ink); }
+    .kc--branco   { background: var(--c-branco-bg);   color: var(--c-branco-ink); }
+    .kc--azul     { background: var(--c-azul-bg);     color: var(--c-azul-ink); }
+    .kc--amarelo  { background: var(--c-amarelo-bg);  color: var(--c-amarelo-ink); }
+
+    .kc__eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 0.75rem;
+    }
+    .kc__emoji {
+      font-size: 3.8rem;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.08));
+    }
+    .kc__name {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 1rem;
+    }
+    .kc__tone {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.55rem 1.1rem;
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 999px;
+      backdrop-filter: blur(6px);
+    }
+    @media (prefers-color-scheme: dark) {
+      .kc__tone { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
+    }
+    .tone-glyph { fill: currentColor; width: 38px; }
+    .kc__tone-name { font-weight: 600; font-size: 0.95rem; }
+
+    .kc__kin-num {
+      margin-top: 1rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .title {
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+      margin: 2rem 0 0.75rem 0.25rem;
+    }
+
+    .rel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (max-width: 480px) { .rel-grid { grid-template-columns: 1fr; } }
+    .rel {
+      padding: 0.9rem 1.1rem;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+    }
+    .rel__label { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.2rem; }
+    .rel__kin { font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+
+    .list {
+      margin: 0; padding: 0.25rem;
+      list-style: none;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+    .list li {
+      display: flex; align-items: center; gap: 0.7rem;
+      padding: 0.55rem 0.9rem;
+      border-radius: 14px;
+    }
+    .list__hl { background: rgba(255,255,255,0.55); }
+    @media (prefers-color-scheme: dark) { .list__hl { background: rgba(255,255,255,0.06); } }
+    .list__num { color: var(--ink-soft); width: 1.6rem; text-align: right; font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+    .list__emoji { font-size: 1.05rem; }
+
+    footer { margin-top: 3rem; text-align: center; color: var(--ink-soft); font-size: 0.8rem; }
+    footer a { color: inherit; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="nav">
+      <span>V2 · Pastel Suave</span>
+      <a href="index.html">Ver os 5 →</a>
+    </div>
+
+    <header class="hero">
+      <div class="mark">☀️</div>
+      <h1>Calculadora do Kin Maia</h1>
+      <p class="sub">O seu dia no Tzolkin em 260 partes.</p>
+    </header>
+
+    <form id="form" autocomplete="off">
+      <input type="date" id="date" required aria-label="Data">
+      <button type="submit">Ver Kin</button>
+    </form>
+
+    <section id="result" aria-live="polite"></section>
+
+    <footer>Baseado no sistema Dreamspell.</footer>
+  </main>
+
+  <script type="module">
+    import { setupForm, toneSvg, prettyKin, parseKinName, escape,
+             SEAL_PT, TONE_PT, TONE_NUMBER, SEAL_EMOJI, COLOR_CSS } from './shared.js';
+
+    setupForm((info) => {
+      const colorClass = COLOR_CSS[info.color] ?? 'azul';
+      const toneNum = TONE_NUMBER[info.tone] ?? 1;
+      const currentSeal = info.seal;
+
+      const relCard = (label, kin) => {
+        const { seal } = parseKinName(kin);
+        return `<div class="rel">
+          <div class="rel__label">${label}</div>
+          <div class="rel__kin"><span>${SEAL_EMOJI[seal] ?? ''}</span>${escape(prettyKin(kin))}</div>
+        </div>`;
+      };
+
+      const waveItem = (kin, i) => {
+        const { seal } = parseKinName(kin);
+        const hl = seal === currentSeal ? 'list__hl' : '';
+        return `<li class="${hl}"><span class="list__num">${i + 1}</span><span class="list__emoji">${SEAL_EMOJI[seal] ?? ''}</span>${escape(prettyKin(kin))}</li>`;
+      };
+
+      const famItem = (s) => `<li><span class="list__emoji">${SEAL_EMOJI[s] ?? ''}</span>${escape(SEAL_PT[s] ?? s)}</li>`;
+
+      return `
+        <article class="kc kc--${colorClass}">
+          <div class="kc__eyebrow">Kin ${info.number} · ${escape(info.color)}</div>
+          <div class="kc__emoji">${SEAL_EMOJI[info.seal] ?? '✨'}</div>
+          <h2 class="kc__name">${escape(SEAL_PT[info.seal] ?? info.seal)}</h2>
+          <div class="kc__tone">
+            ${toneSvg(toneNum, { width: 42, dotR: 3, dotGap: 4, barH: 4.5, barW: 28, gap: 3 })}
+            <span class="kc__tone-name">${escape(TONE_PT[info.tone] ?? info.tone)} · ${toneNum}</span>
+          </div>
+          <div class="kc__kin-num">kin ${info.number} de 260</div>
+        </article>
+
+        <h2 class="title">Relações</h2>
+        <div class="rel-grid">
+          ${relCard('Guia', info.guide)}
+          ${relCard('Análogo', info.analog)}
+          ${relCard('Antípoda', info.antipode)}
+          ${relCard('Oculto', info.hidden)}
+        </div>
+
+        <h2 class="title">Onda Encantada</h2>
+        <ol class="list">${info.wavespell.map(waveItem).join('')}</ol>
+
+        <h2 class="title">Família Terrestre</h2>
+        <ul class="list">${info.family.map(famItem).join('')}</ul>
+      `;
+    });
+  </script>
+</body>
+</html>

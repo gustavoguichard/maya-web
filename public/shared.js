@@ -91,7 +91,7 @@ export const toneSvg = (n, opts = {}) => {
     y += barH + gap;
   }
 
-  return `<svg class="${className}" viewBox="0 0 ${width} ${y}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${parts.join('')}</svg>`;
+  return `<svg class="${className}" width="${width}" height="${y}" viewBox="0 0 ${width} ${y}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${parts.join('')}</svg>`;
 };
 
 export function setupForm(renderFn) {

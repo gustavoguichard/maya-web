@@ -1,4 +1,4 @@
-import { kinInfo } from '../maya.js';
+import { kinInfo } from './maya.js';
 
 export { kinInfo };
 
@@ -25,11 +25,25 @@ export const TONE_NUMBER = {
   Espectral: 11, Cristal: 12, Cosmico: 13,
 };
 
-export const SEAL_EMOJI = {
-  Dragao: '🐉', Vento: '🌬️', Noite: '🌙', Semente: '🌱', Serpente: '🐍',
-  EnlacadorDeMundos: '🌉', Mao: '✋', Estrela: '⭐', Lua: '🌕', Cachorro: '🐕',
-  Macaco: '🐒', Humano: '🧍', CaminhanteDoCeu: '🌤️', Mago: '🧙', Aguia: '🦅',
-  Guerreiro: '⚔️', Terra: '🌎', Espelho: '🪞', Tormenta: '⛈️', Sol: '☀️',
+/**
+ * File-name (under /seals/*.png) for each selo key. The images are the
+ * canonical Dreamspell drawings from the Foundation for the Law of Time.
+ */
+export const SEAL_FILE = {
+  Dragao: 'dragao', Vento: 'vento', Noite: 'noite', Semente: 'semente',
+  Serpente: 'serpente', EnlacadorDeMundos: 'enlacador', Mao: 'mao',
+  Estrela: 'estrela', Lua: 'lua', Cachorro: 'cachorro', Macaco: 'macaco',
+  Humano: 'humano', CaminhanteDoCeu: 'caminhante', Mago: 'mago',
+  Aguia: 'aguia', Guerreiro: 'guerreiro', Terra: 'terra', Espelho: 'espelho',
+  Tormenta: 'tormenta', Sol: 'sol',
+};
+
+export const sealImg = (key, opts = {}) => {
+  const { size = 40, className = 'seal-img', base = '/seals' } = opts;
+  const file = SEAL_FILE[key];
+  if (!file) return '';
+  const alt = SEAL_PT[key] ?? key;
+  return `<img class="${className}" src="${base}/${file}.png" width="${size}" height="${size}" alt="${alt}" loading="lazy" decoding="async">`;
 };
 
 export const COLOR_CSS = {

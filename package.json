@@ -5,15 +5,21 @@
   "description": "Mayan Tzolkin kin calculator — PureScript port of the Haskell library, compiled to a static web app.",
   "type": "module",
   "scripts": {
-    "build": "spago bundle",
-    "dev": "http-server public -p 3000 -c-1",
+    "build:css": "tailwindcss -i src/input.css -o public/tailwind.css --minify",
+    "build:js": "spago bundle",
+    "build": "npm run build:css && npm run build:js",
+    "dev": "concurrently -k -n bundle,css,serve -c cyan,magenta,green \"chokidar 'src/**/*.purs' -c 'spago bundle' --initial\" \"tailwindcss -i src/input.css -o public/tailwind.css --watch\" \"live-server public --port=3000 --no-browser\"",
     "test": "spago test"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.2.2",
+    "chokidar-cli": "^3.0.0",
+    "concurrently": "^9.2.1",
     "esbuild": "^0.24.0",
-    "http-server": "^14.1.1",
+    "live-server": "^1.2.2",
     "purescript": "^0.15.15",
-    "spago": "next"
+    "spago": "next",
+    "tailwindcss": "^4.2.2"
   },
   "packageManager": "npm@11.12.1"
 }

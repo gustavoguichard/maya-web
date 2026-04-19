@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0a0e1f;
+  --color-ink: #edebe3;
+  --color-ink-soft: #9892a7;
+  --color-gold: #e5b850;
+  --color-gold-soft: #8f7024;
+  --color-maya-red: #ef6056;
+  --color-maya-white: #e8e4d8;
+  --color-maya-blue: #6ea6f3;
+  --color-maya-yellow: #e5b850;
+
+  --font-sans: "Inter", ui-sans-serif, -apple-system, system-ui, sans-serif;
+  --font-serif: ui-serif, "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --font-mono: ui-monospace, "SF Mono", monospace;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* Subtle fixed radial glow behind everything. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 900px 600px at 50% -20%,
+      rgb(142 116 230 / 0.28),
+      transparent 65%
+    );
+  }
+
+  /* Form controls don't inherit typography by default. */
+  input[type="date"],
+  button {
+    font: inherit;
+  }
+
+  input[type="date"] {
+    color-scheme: dark;
+  }
+
+  /* Shared dividers used by the oracle cross. */
+  :root {
+    --oracle-line-v: linear-gradient(180deg, transparent, rgb(229 184 80 / 0.18) 15%, rgb(229 184 80 / 0.18) 85%, transparent);
+    --oracle-line-h: linear-gradient(90deg, transparent, rgb(229 184 80 / 0.18) 15%, rgb(229 184 80 / 0.18) 85%, transparent);
+  }
+}

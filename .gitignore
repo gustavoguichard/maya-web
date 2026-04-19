@@ -3,5 +3,6 @@ output/
 .spago/
 .psa-stash
 public/maya.js
+public/tailwind.css
 *.log
 .DS_Store
